@@ -141,6 +141,10 @@ body {
     linear-gradient(160deg, #a88458 0%, #8a6840 45%, #9a7850 100%);
 }
 
+.present-rig {
+  transform-style: preserve-3d;
+}
+
 .present-scene {
   transform-style: preserve-3d;
 }

@@ -1,128 +1,117 @@
 import { motion } from 'framer-motion'
+import FaceAnchor from './FaceAnchor'
+import { LAYER, SIZE } from './presentConstants'
 
-export default function Ribbon3D({ size, half, interactive = true, onRemove, onDragStart }) {
+export default function Ribbon3D({ interactive = true, onRemove, onDragStart }) {
   const handleDragEnd = (_, info) => {
     if (!interactive) return
     const distance = Math.sqrt(info.offset.x ** 2 + info.offset.y ** 2)
-    if (distance > 50 || info.offset.y > 40) onRemove()
+    if (distance > 45 || info.offset.y > 35) onRemove()
   }
 
   const band = 20
+  const cx = SIZE / 2 - band / 2
 
   return (
-    <div style={{ transformStyle: 'preserve-3d' }}>
-      {/* horizontal band — front */}
-      <div
-        className="absolute ribbon-satin"
-        style={{
-          width: size,
-          height: band,
-          top: size / 2 - band / 2,
-          transform: `rotateY(0deg) translateZ(${half + 1}px)`,
-          boxShadow: '0 3px 10px rgba(0,0,0,0.35)',
-        }}
-      />
-
-      {/* horizontal band — wraps to top */}
-      <div
-        className="absolute ribbon-satin"
-        style={{
-          width: size,
-          height: band,
-          left: 0,
-          transform: `rotateX(90deg) translateZ(${half - size / 2 + band / 2}px) translateY(${-size / 2 + band / 2}px)`,
-          transformOrigin: 'center center',
-        }}
-      />
-
-      {/* horizontal band — right side */}
-      <div
-        className="absolute ribbon-satin"
-        style={{
-          width: band,
-          height: size,
-          left: size / 2 - band / 2,
-          transform: `rotateY(90deg) translateZ(${half + 1}px)`,
-        }}
-      />
-
-      {/* vertical band — front */}
-      <div
-        className="absolute ribbon-satin"
-        style={{
-          width: band,
-          height: size,
-          left: size / 2 - band / 2,
-          transform: `rotateY(0deg) translateZ(${half + 2}px)`,
-        }}
-      />
-
-      {/* vertical band — top */}
-      <div
-        className="absolute ribbon-satin"
-        style={{
-          width: band,
-          height: size,
-          left: size / 2 - band / 2,
-          transform: `rotateX(90deg) translateZ(${half + 1}px) translateY(${-size / 2}px)`,
-          transformOrigin: 'top center',
-        }}
-      />
-
-      {/* bow — sits above top face */}
-      <div
-        className="absolute pointer-events-none"
-        style={{
-          width: 70,
-          height: 50,
-          left: size / 2 - 35,
-          transform: `rotateX(90deg) translateZ(${half + 8}px) translateY(${-size / 2 - 10}px)`,
-          transformStyle: 'preserve-3d',
-        }}
-      >
+    <motion.div
+      style={{ transformStyle: 'preserve-3d' }}
+      exit={{
+        opacity: 0,
+        z: -40,
+        rotateY: 30,
+        transition: { duration: 0.55, ease: 'easeIn' },
+      }}
+    >
+      {/* ── Front face bands ── */}
+      <FaceAnchor face="front" zOffset={LAYER.RIBBON}>
         <div
-          className="absolute left-0 top-3 w-[30px] h-[24px] ribbon-satin rounded-full"
-          style={{ transform: 'rotateZ(-30deg)', boxShadow: '0 4px 8px rgba(0,0,0,0.4)' }}
+          className="absolute ribbon-satin left-0 right-0"
+          style={{ top: cx, height: band, boxShadow: '0 2px 8px rgba(0,0,0,0.35)' }}
         />
         <div
-          className="absolute right-0 top-3 w-[30px] h-[24px] ribbon-satin rounded-full"
-          style={{ transform: 'rotateZ(30deg)', boxShadow: '0 4px 8px rgba(0,0,0,0.4)' }}
+          className="absolute ribbon-satin top-0 bottom-0"
+          style={{ left: cx, width: band }}
         />
-        <div
-          className="absolute left-1/2 top-[18px] -translate-x-1/2 w-[16px] h-[16px] ribbon-satin rounded-full"
-          style={{ transform: 'translateZ(4px)' }}
-        />
-      </div>
+      </FaceAnchor>
 
-      {/* dangling tail — draggable when interactive */}
-      <motion.div
-        className={`absolute touch-none ${interactive ? 'cursor-grab active:cursor-grabbing' : 'pointer-events-none'}`}
-        style={{
-          width: 14,
-          height: 48,
-          left: size * 0.62,
-          top: size / 2 + 20,
-          transform: `rotateY(0deg) translateZ(${half + 4}px)`,
-          transformStyle: 'preserve-3d',
-        }}
-        drag={interactive}
-        dragElastic={0.15}
-        dragMomentum={false}
-        onDragStart={interactive ? onDragStart : undefined}
-        onDragEnd={handleDragEnd}
-        whileDrag={interactive ? { scale: 1.08, z: 20 } : {}}
-      >
-        <div className="w-full h-full ribbon-satin rounded-b-xl shadow-lg" />
-        {interactive && (
-          <motion.span
-            className="absolute -right-7 top-1/2 text-gold text-base pointer-events-none"
-            animate={{ y: [0, 5, 0] }}
-            transition={{ repeat: Infinity, duration: 1.2 }}
-          >
-            ↓
-          </motion.span>
-        )}
-      </motion.div>
-    </div>
+      {/* ── Right face vertical wrap ── */}
+      <FaceAnchor face="right" zOffset={LAYER.RIBBON}>
+        <div
+          className="absolute ribbon-satin top-0 bottom-0"
+          style={{ left: cx, width: band }}
+        />
+      </FaceAnchor>
+
+      {/* ── Left face vertical wrap ── */}
+      <FaceAnchor face="left" zOffset={LAYER.RIBBON}>
+        <div
+          className="absolute ribbon-satin top-0 bottom-0"
+          style={{ left: cx, width: band }}
+        />
+      </FaceAnchor>
+
+      {/* ── Top face horizontal wrap ── */}
+      <FaceAnchor face="top" zOffset={LAYER.RIBBON}>
+        <div
+          className="absolute ribbon-satin left-0 right-0"
+          style={{ top: cx, height: band }}
+        />
+      </FaceAnchor>
+
+      {/* ── Back face horizontal (ribbon continues around) ── */}
+      <FaceAnchor face="back" zOffset={LAYER.RIBBON}>
+        <div
+          className="absolute ribbon-satin left-0 right-0"
+          style={{ top: cx, height: band }}
+        />
+      </FaceAnchor>
+
+      {/* ── Bow on top face ── */}
+      <FaceAnchor face="top" zOffset={LAYER.RIBBON + 4}>
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[68px] h-[46px]">
+          <div
+            className="absolute left-0 top-2 w-[30px] h-[22px] ribbon-satin rounded-full"
+            style={{ transform: 'rotate(-32deg)', boxShadow: '0 4px 10px rgba(0,0,0,0.45)' }}
+          />
+          <div
+            className="absolute right-0 top-2 w-[30px] h-[22px] ribbon-satin rounded-full"
+            style={{ transform: 'rotate(32deg)', boxShadow: '0 4px 10px rgba(0,0,0,0.45)' }}
+          />
+          <div className="absolute left-1/2 top-[15px] -translate-x-1/2 w-[15px] h-[15px] ribbon-satin rounded-full" />
+        </div>
+      </FaceAnchor>
+
+      {/* ── Draggable tail — front face, below bow ── */}
+      <FaceAnchor face="front" zOffset={LAYER.RIBBON_CROSS + 1}>
+        <motion.div
+          className={`absolute touch-none ${interactive ? 'cursor-grab active:cursor-grabbing' : 'pointer-events-none'}`}
+          style={{
+            width: 13,
+            height: 44,
+            left: SIZE * 0.58,
+            top: SIZE / 2 + 14,
+            transformStyle: 'preserve-3d',
+          }}
+          drag={interactive}
+          dragElastic={0.12}
+          dragMomentum={false}
+          onDragStart={interactive ? onDragStart : undefined}
+          onDragEnd={handleDragEnd}
+          whileDrag={interactive ? { z: 16, rotateX: -15 } : {}}
+        >
+          <div className="w-full h-full ribbon-satin rounded-b-xl shadow-lg" />
+          {interactive && (
+            <motion.span
+              className="absolute -right-6 top-1/2 text-gold text-sm pointer-events-none"
+              style={{ transform: 'translateZ(4px)' }}
+              animate={{ y: [0, 4, 0] }}
+              transition={{ repeat: Infinity, duration: 1.1 }}
+            >
+              ↓
+            </motion.span>
+          )}
+        </motion.div>
+      </FaceAnchor>
+    </motion.div>
   )
 }
