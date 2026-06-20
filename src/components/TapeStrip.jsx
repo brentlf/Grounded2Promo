@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 
-export default function TapeStrip({ id, initialX, initialY, rotation, onRemove, onDragStart }) {
+export default function TapeStrip({ id, initialX, initialY, rotation, onRemove, onDragStart, depth = false }) {
   const handleDragEnd = (_, info) => {
     const distance = Math.sqrt(info.offset.x ** 2 + info.offset.y ** 2)
     if (distance > 60) {
@@ -27,6 +27,8 @@ export default function TapeStrip({ id, initialX, initialY, rotation, onRemove, 
         scale: 1.05,
         rotate: rotation + 15,
         zIndex: 50,
+        rotateX: depth ? -30 : 0,
+        z: depth ? 30 : 0,
       }}
       exit={{
         opacity: 0,
@@ -35,7 +37,7 @@ export default function TapeStrip({ id, initialX, initialY, rotation, onRemove, 
         transition: { duration: 0.3 },
       }}
     >
-      <div className="tape-gloss w-full h-full rounded-sm relative overflow-hidden">
+      <div className={`tape-gloss w-full h-full rounded-sm relative overflow-hidden ${depth ? 'shadow-lg' : ''}`}>
         <div className="absolute inset-0 bg-white/10" />
         <div
           className="absolute top-0 left-[20%] w-[30%] h-full bg-white/25"
