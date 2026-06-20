@@ -67,17 +67,24 @@ export default function Present3D({
   }, [])
 
   const allFlapsOpen = Object.values(openedFlaps).every(Boolean)
-  const showTape = currentStep === 1 && !completed
-  const showRibbon = currentStep === 2 && !completed
-  const showFlaps = currentStep === 3 && !allFlapsOpen && !completed
+  const allTapeRemoved = TAPE_PIECES.every((t) => tapeRemoved[t.id])
+
+  // Progressive layers: all visible on load; only the active step is interactive
   const showWrappedCube = currentStep <= 2 && !completed
   const showCardboardCore = currentStep === 3 && !completed
   const showOpenBox = currentStep >= 4
-  const allTapeRemoved = TAPE_PIECES.every((t) => tapeRemoved[t.id])
+
+  const showRibbonVisible = !ribbonRemoved && !completed
+  const showRibbonInteractive = currentStep === 1 && !completed
+
+  const showTapeVisible = !allTapeRemoved && currentStep <= 2 && !completed
+  const showTapeInteractive = currentStep === 2 && ribbonRemoved && !completed
+
+  const showFlaps = currentStep === 3 && !allFlapsOpen && !completed
 
   const viewTilt = showReveal
     ? { x: -28, y: -8 }
-    : showOpenBox && !showWrapper
+    : showOpenBox
       ? { x: -22, y: -18 }
       : tilt
 
@@ -214,20 +221,26 @@ export default function Present3D({
           />
         )}
 
-        {/* ── 3D ribbon (step 2) ── */}
+        {/* ── 3D ribbon (visible from start, interactive step 1) ── */}
         <AnimatePresence>
-          {showRibbon && !ribbonRemoved && (
+          {showRibbonVisible && (
             <motion.div
               key="ribbon-3d"
               style={{ transformStyle: 'preserve-3d' }}
-              exit={{ opacity: 0, transition: { duration: 0.5 } }}
+              exit={{ opacity: 0, y: 20, transition: { duration: 0.5 } }}
             >
-              <Ribbon3D size={SIZE} half={HALF} onRemove={onRibbonRemove} onDragStart={onInteractionStart} />
+              <Ribbon3D
+                size={SIZE}
+                half={HALF}
+                interactive={showRibbonInteractive}
+                onRemove={onRibbonRemove}
+                onDragStart={onInteractionStart}
+              />
             </motion.div>
           )}
         </AnimatePresence>
 
-        {/* ── Tape on front face (step 1) ── */}
+        {/* ── Tape on front face (visible from start, interactive step 2) ── */}
         <div
           style={{
             transformStyle: 'preserve-3d',
@@ -235,8 +248,7 @@ export default function Present3D({
           }}
         >
           <AnimatePresence>
-            {showTape &&
-              !allTapeRemoved &&
+            {showTapeVisible &&
               TAPE_PIECES.filter((t) => !tapeRemoved[t.id]).map((t) => (
                 <TapeStrip
                   key={t.id}
@@ -244,6 +256,7 @@ export default function Present3D({
                   initialX={t.x}
                   initialY={t.y}
                   rotation={t.rot}
+                  interactive={showTapeInteractive}
                   onRemove={onTapeRemove}
                   onDragStart={onInteractionStart}
                   depth

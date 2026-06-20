@@ -1,4 +1,4 @@
-const STEPS = ['REMOVE TAPE', 'UNTIE RIBBON', 'UNWRAP', 'OPEN']
+const STEPS = ['UNTIE RIBBON', 'REMOVE TAPE', 'UNWRAP', 'OPEN']
 
 export default function ProgressTracker({ currentStep, completed }) {
   return (

@@ -1,7 +1,17 @@
 import { motion } from 'framer-motion'
 
-export default function TapeStrip({ id, initialX, initialY, rotation, onRemove, onDragStart, depth = false }) {
+export default function TapeStrip({
+  id,
+  initialX,
+  initialY,
+  rotation,
+  onRemove,
+  onDragStart,
+  depth = false,
+  interactive = true,
+}) {
   const handleDragEnd = (_, info) => {
+    if (!interactive) return
     const distance = Math.sqrt(info.offset.x ** 2 + info.offset.y ** 2)
     if (distance > 60) {
       onRemove(id)
@@ -10,26 +20,31 @@ export default function TapeStrip({ id, initialX, initialY, rotation, onRemove, 
 
   return (
     <motion.div
-      className="absolute z-30 cursor-grab active:cursor-grabbing touch-none"
+      className={`absolute z-30 ${interactive ? 'cursor-grab active:cursor-grabbing touch-none' : 'pointer-events-none'}`}
       style={{
         left: initialX,
         top: initialY,
         width: 70,
         height: 22,
         rotate: rotation,
+        opacity: interactive ? 1 : 0.85,
       }}
-      drag
+      drag={interactive}
       dragElastic={0.1}
       dragMomentum={false}
-      onDragStart={onDragStart}
+      onDragStart={interactive ? onDragStart : undefined}
       onDragEnd={handleDragEnd}
-      whileDrag={{
-        scale: 1.05,
-        rotate: rotation + 15,
-        zIndex: 50,
-        rotateX: depth ? -30 : 0,
-        z: depth ? 30 : 0,
-      }}
+      whileDrag={
+        interactive
+          ? {
+              scale: 1.05,
+              rotate: rotation + 15,
+              zIndex: 50,
+              rotateX: depth ? -30 : 0,
+              z: depth ? 30 : 0,
+            }
+          : {}
+      }
       exit={{
         opacity: 0,
         scale: 0.5,

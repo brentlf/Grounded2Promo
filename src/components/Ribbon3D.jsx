@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion'
 
-export default function Ribbon3D({ size, half, onRemove, onDragStart }) {
+export default function Ribbon3D({ size, half, interactive = true, onRemove, onDragStart }) {
   const handleDragEnd = (_, info) => {
+    if (!interactive) return
     const distance = Math.sqrt(info.offset.x ** 2 + info.offset.y ** 2)
     if (distance > 50 || info.offset.y > 40) onRemove()
   }
@@ -93,9 +94,9 @@ export default function Ribbon3D({ size, half, onRemove, onDragStart }) {
         />
       </div>
 
-      {/* dangling tail — draggable */}
+      {/* dangling tail — draggable when interactive */}
       <motion.div
-        className="absolute cursor-grab active:cursor-grabbing touch-none"
+        className={`absolute touch-none ${interactive ? 'cursor-grab active:cursor-grabbing' : 'pointer-events-none'}`}
         style={{
           width: 14,
           height: 48,
@@ -104,21 +105,23 @@ export default function Ribbon3D({ size, half, onRemove, onDragStart }) {
           transform: `rotateY(0deg) translateZ(${half + 4}px)`,
           transformStyle: 'preserve-3d',
         }}
-        drag
+        drag={interactive}
         dragElastic={0.15}
         dragMomentum={false}
-        onDragStart={onDragStart}
+        onDragStart={interactive ? onDragStart : undefined}
         onDragEnd={handleDragEnd}
-        whileDrag={{ scale: 1.08, z: 20 }}
+        whileDrag={interactive ? { scale: 1.08, z: 20 } : {}}
       >
         <div className="w-full h-full ribbon-satin rounded-b-xl shadow-lg" />
-        <motion.span
-          className="absolute -right-7 top-1/2 text-gold text-base pointer-events-none"
-          animate={{ y: [0, 5, 0] }}
-          transition={{ repeat: Infinity, duration: 1.2 }}
-        >
-          ↓
-        </motion.span>
+        {interactive && (
+          <motion.span
+            className="absolute -right-7 top-1/2 text-gold text-base pointer-events-none"
+            animate={{ y: [0, 5, 0] }}
+            transition={{ repeat: Infinity, duration: 1.2 }}
+          >
+            ↓
+          </motion.span>
+        )}
       </motion.div>
     </div>
   )
