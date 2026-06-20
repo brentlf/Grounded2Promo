@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import KraftDoodles from './KraftDoodles'
-import TapeStrip3D from './TapeStrip3D'
 import Ribbon3D from './Ribbon3D'
+import Bow3D from './Bow3D'
+import TapeStrip3D from './TapeStrip3D'
 import WrappingFlap3D from './WrappingFlap3D'
 import OpenBox3D from './OpenBox3D'
 import { SIZE, HALF, TAPE_PIECES } from './presentConstants'
@@ -167,19 +168,12 @@ export default function Present3D({
           />
         )}
 
-        {/* Layer 1: Ribbon (wraps around cube in 3D) */}
+        {/* Layer 1: Ribbon bands (non-interactive wrap) */}
         <AnimatePresence>
-          {showRibbonVisible && (
-            <Ribbon3D
-              key="ribbon"
-              interactive={showRibbonInteractive}
-              onRemove={onRibbonRemove}
-              onDragStart={onInteractionStart}
-            />
-          )}
+          {showRibbonVisible && <Ribbon3D key="ribbon-bands" />}
         </AnimatePresence>
 
-        {/* Layer 2: Tape (on front face, above ribbon in Z) */}
+        {/* Layer 2: Tape — pointer-events off during step 1 so bow stays clickable */}
         <AnimatePresence>
           {showTapeVisible &&
             TAPE_PIECES.filter((t) => !tapeRemoved[t.id]).map((t) => (
@@ -198,7 +192,24 @@ export default function Present3D({
             ))}
         </AnimatePresence>
 
-        {/* Layer 3: Kraft flaps (each hinged on its 3D face) */}
+        {/* Layer 3: 3D bow — rendered last, highest Z, pull to untie */}
+        <AnimatePresence>
+          {showRibbonVisible && (
+            <motion.div
+              key="ribbon-bow"
+              style={{ transformStyle: 'preserve-3d' }}
+              exit={{ opacity: 0, z: 40, rotateX: -25, transition: { duration: 0.5 } }}
+            >
+              <Bow3D
+                interactive={showRibbonInteractive}
+                onRemove={onRibbonRemove}
+                onDragStart={onInteractionStart}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Layer 4: Kraft flaps */}
         {showFlaps && (
           <div style={{ transformStyle: 'preserve-3d' }}>
             {['top', 'left', 'right', 'bottom'].map(

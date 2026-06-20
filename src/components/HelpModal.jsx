@@ -20,7 +20,7 @@ export default function HelpModal({ open, onClose }) {
           >
             <h2 className="font-display text-2xl text-accent-bright mb-4">HOW TO UNWRAP</h2>
             <ol className="space-y-3 text-sm text-white/85">
-              <li><strong className="text-accent-green">1.</strong> Pull the ribbon end to untie the bow.</li>
+              <li><strong className="text-accent-green">1.</strong> Pull the bow on top of the gift to untie it.</li>
               <li><strong className="text-accent-green">2.</strong> Drag each piece of tape off the package.</li>
               <li><strong className="text-accent-green">3.</strong> Peel the wrapping paper flaps away.</li>
               <li><strong className="text-accent-green">4.</strong> Tap or drag the box lid upward to open!</li>

@@ -14,7 +14,11 @@ export default function TapeStrip3D({
   onDragStart,
 }) {
   return (
-    <FaceAnchor face="front" zOffset={LAYER.TAPE}>
+    <FaceAnchor
+      face="front"
+      zOffset={LAYER.TAPE}
+      style={interactive ? undefined : { pointerEvents: 'none' }}
+    >
       <TapeOnFace
         id={id}
         x={x}

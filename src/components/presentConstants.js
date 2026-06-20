@@ -7,6 +7,7 @@ export const LAYER = {
   RIBBON_CROSS: 2,
   TAPE: 5,
   FLAP: 3,
+  BOW: 12,
   LID_HINT: 8,
 }
 

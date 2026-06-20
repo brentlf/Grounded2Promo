@@ -10,7 +10,7 @@ import HelpModal from './components/HelpModal'
 import GiftBox from './components/GiftBox'
 
 const INSTRUCTIONS = {
-  1: 'DRAG THE RIBBON TO UNTIE IT',
+  1: 'PULL THE BOW TO UNTIE IT',
   2: 'DRAG THE TAPE TO PEEL IT OFF',
   3: 'PULL THE WRAPPING PAPER OPEN',
   4: 'OPEN THE SUPPLY DROP',
