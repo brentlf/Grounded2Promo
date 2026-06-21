@@ -14,7 +14,7 @@ const INSTRUCTIONS = {
   1: 'PULL THE BOW TO UNTIE IT',
   2: 'DRAG THE TAPE TO PEEL IT OFF',
   3: 'PULL EACH WRAPPING FLAP OPEN',
-  4: 'OPEN THE SUPPLY DROP',
+  4: 'TAP OR PULL THE LID OPEN',
 }
 
 const INITIAL_FLAPS = Object.fromEntries(FLAP_IDS.map((id) => [id, false]))

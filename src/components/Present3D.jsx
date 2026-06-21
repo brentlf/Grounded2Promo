@@ -79,11 +79,13 @@ export default function Present3D({
 
   const viewTilt = showReveal
     ? { x: -28, y: -8 }
-    : showOpenBox
-      ? { x: -24, y: -16 }
-      : currentStep === 3
-        ? step3Tilt()
-        : tilt
+    : currentStep === 4 && !boxOpened
+      ? { x: -30, y: -22 }
+      : showOpenBox
+        ? { x: -24, y: -16 }
+        : currentStep === 3
+          ? step3Tilt()
+          : tilt
 
   return (
     <div
