@@ -47,10 +47,10 @@ export default function GiftBox({
 
         {showReveal && (
           <motion.div
-            className="absolute inset-0 flex items-center justify-center z-30 pointer-events-none"
-            initial={{ opacity: 0, y: 40, scale: 0.85 }}
-            animate={{ opacity: 1, y: -10, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute inset-0 flex items-end sm:items-center justify-center z-30 pointer-events-none pb-4 sm:pb-0"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3, delay: 0.5 }}
           >
             <div className="pointer-events-auto">
               <VoucherCard copied={copied} onCopy={onCopy} onPlayAgain={onPlayAgain} />

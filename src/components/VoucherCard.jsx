@@ -1,114 +1,65 @@
 import { motion } from 'framer-motion'
-import { BROTHER_NAME, VOUCHER_CODE, LETS_GO_URL } from '../config'
+import { VOUCHER_CODE, LETS_GO_URL } from '../config'
 
-/** Original adventure-themed illustration — no copyrighted characters */
-function AdventureIllustration() {
-  return (
-    <svg viewBox="0 0 280 120" className="w-full h-auto">
-      {/* sky gradient */}
-      <defs>
-        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#4a8ab0" />
-          <stop offset="100%" stopColor="#2a5a40" />
-        </linearGradient>
-        <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#5a8f3a" />
-          <stop offset="100%" stopColor="#3a6028" />
-        </linearGradient>
-      </defs>
-      <rect width="280" height="120" fill="url(#sky)" rx="4" />
-
-      {/* giant grass blades */}
-      {[20, 60, 100, 140, 180, 220, 260].map((x, i) => (
-        <path
-          key={x}
-          d={`M${x} 120 Q${x + (i % 2 ? 10 : -10)} ${60 + (i % 3) * 10} ${x + 5} 40`}
-          fill="none"
-          stroke={`hsl(${100 + i * 5}, 45%, ${25 + i * 3}%)`}
-          strokeWidth={3 + (i % 2)}
-        />
-      ))}
-
-      {/* ground */}
-      <rect y="90" width="280" height="30" fill="url(#ground)" />
-
-      {/* tiny adventurers (original silhouettes) */}
-      {/* character 1 */}
-      <g transform="translate(70, 72)">
-        <rect x="-4" y="8" width="8" height="14" rx="2" fill="#c44" />
-        <circle cx="0" cy="4" r="5" fill="#e8c4a0" />
-        <line x1="-6" y1="14" x2="-10" y2="24" stroke="#8a6840" strokeWidth="2" />
-        <line x1="6" y1="14" x2="12" y2="22" stroke="#8a6840" strokeWidth="2" />
-        <line x1="0" y1="10" x2="0" y2="-8" stroke="#666" strokeWidth="1.5" />
-      </g>
-
-      {/* character 2 */}
-      <g transform="translate(140, 70)">
-        <rect x="-5" y="10" width="10" height="16" rx="2" fill="#48a" />
-        <circle cx="0" cy="5" r="6" fill="#d4a880" />
-        <line x1="-8" y1="16" x2="-14" y2="26" stroke="#8a6840" strokeWidth="2" />
-        <line x1="8" y1="16" x2="14" y2="26" stroke="#8a6840" strokeWidth="2" />
-        <line x1="2" y1="12" x2="8" y2="-4" stroke="#666" strokeWidth="1.5" />
-      </g>
-
-      {/* character 3 */}
-      <g transform="translate(200, 74)">
-        <rect x="-4" y="8" width="8" height="12" rx="2" fill="#6a4" />
-        <circle cx="0" cy="3" r="4.5" fill="#c8a888" />
-        <line x1="-5" y1="12" x2="-8" y2="22" stroke="#8a6840" strokeWidth="2" />
-        <line x1="5" y1="12" x2="8" y2="22" stroke="#8a6840" strokeWidth="2" />
-        <rect x="-3" y="-2" width="6" height="4" rx="1" fill="#555" />
-      </g>
-
-      {/* oversized dewdrop */}
-      <ellipse cx="230" cy="50" rx="8" ry="12" fill="rgba(150,200,255,0.4)" />
-    </svg>
-  )
-}
+const VOUCHER_IMAGE = '/assets/voucher-card.png'
 
 export default function VoucherCard({ copied, onCopy, onPlayAgain }) {
   return (
     <motion.div
-      className="relative z-30 w-[min(260px,85vw)]"
-      initial={{ opacity: 0, y: 30, scale: 0.9 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.6, delay: 0.3, ease: 'easeOut' }}
+      className="relative z-30 w-[min(300px,90vw)]"
+      initial={{ opacity: 0, y: 60, rotateX: 25, scale: 0.88 }}
+      animate={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
+      transition={{ duration: 0.85, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      style={{ transformStyle: 'preserve-3d', perspective: 800 }}
     >
-      <div className="bg-gradient-to-b from-[#f5f0e8] to-[#e8dfd0] rounded-xl overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.5)] border-2 border-[#8a8070]">
-        {/* card header */}
-        <div className="bg-gradient-to-r from-[#3a6830] to-[#5a9040] px-4 py-2 text-center">
-          <p className="font-display text-xl text-gold tracking-wide">HAPPY BIRTHDAY!</p>
-        </div>
+      {/* Plaque mount — thick cardboard + gold frame */}
+      <div className="relative" style={{ transformStyle: 'preserve-3d' }}>
+        {/* cardboard depth layers */}
+        <div
+          className="absolute inset-0 rounded-lg bg-[#5a4030] shadow-2xl"
+          style={{ transform: 'translateZ(-12px) translateY(5px)' }}
+        />
+        <div
+          className="absolute inset-0 rounded-lg bg-[#3d2e20]"
+          style={{ transform: 'translateZ(-6px) translateY(3px)' }}
+        />
 
-        <div className="p-3">
-          <p className="text-center font-bold text-[#2a3820] text-sm sm:text-base leading-snug mb-2">
-            Happy Birthday, {BROTHER_NAME}!
-          </p>
-          <p className="text-center text-[#4a5840] text-xs sm:text-sm font-semibold mb-3">
-            Your Grounded 2 adventure starts here.
-          </p>
-
-          <AdventureIllustration />
-
-          <div className="mt-3 bg-[#2a3820] rounded-lg px-3 py-2.5 text-center">
-            <p className="text-[10px] text-white/50 uppercase tracking-widest mb-1">Voucher Code</p>
-            <p className="font-mono font-bold text-gold text-sm sm:text-base tracking-wider select-all">
-              {VOUCHER_CODE}
-            </p>
+        {/* gold plaque bezel */}
+        <div className="gold-plaque-frame rounded-xl p-[5px] shadow-[0_16px_48px_rgba(0,0,0,0.65)]">
+          <div className="rounded-lg overflow-hidden bg-[#1a1208] relative">
+            <img
+              src={VOUCHER_IMAGE}
+              alt="Grounded 2 birthday voucher"
+              className="w-full h-auto block"
+              draggable={false}
+            />
+            {/* subtle gold sheen */}
+            <div className="absolute inset-0 bg-gradient-to-br from-[#ffd966]/12 via-transparent to-transparent pointer-events-none" />
           </div>
-
-          <button
-            type="button"
-            onClick={onCopy}
-            className="mt-3 w-full py-2.5 rounded-lg bg-accent-green text-forest-dark font-extrabold text-sm hover:bg-accent-bright transition-colors active:scale-[0.98]"
-          >
-            {copied ? '✓ COPIED!' : 'COPY CODE'}
-          </button>
         </div>
+
+        {/* side edge — cardboard thickness */}
+        <div
+          className="absolute -bottom-2 left-2 right-2 h-3 rounded-b-md bg-[#4a3828] opacity-90"
+          style={{ transform: 'translateZ(-4px)' }}
+        />
       </div>
 
-      {/* action buttons below card */}
-      <div className="flex gap-3 mt-4">
+      {/* Copy uses config code (update src/config.js to match your card) */}
+      <div className="mt-4 space-y-2">
+        <button
+          type="button"
+          onClick={onCopy}
+          className="w-full py-3 rounded-xl bg-accent-green text-forest-dark font-extrabold text-sm tracking-wide hover:bg-accent-bright transition-colors active:scale-[0.98] shadow-lg"
+        >
+          {copied ? '✓ CODE COPIED!' : 'COPY CODE'}
+        </button>
+        <p className="text-center font-mono text-gold/80 text-xs tracking-wider select-all">
+          {VOUCHER_CODE}
+        </p>
+      </div>
+
+      <div className="flex gap-3 mt-3">
         <button
           type="button"
           onClick={onPlayAgain}

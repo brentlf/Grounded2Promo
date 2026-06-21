@@ -195,6 +195,23 @@ body {
   animation: shake 0.4s ease-in-out;
 }
 
+/* Gold plaque frame around voucher */
+.gold-plaque-frame {
+  background: linear-gradient(
+    145deg,
+    #ffe082 0%,
+    #f5c842 18%,
+    #c9a020 45%,
+    #f5d060 65%,
+    #e8b830 82%,
+    #ffe082 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.25),
+    0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
 /* Scrollbar hide for help modal */
 .no-scrollbar::-webkit-scrollbar {
   display: none;

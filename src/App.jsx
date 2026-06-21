@@ -32,6 +32,7 @@ export default function App() {
   const [showHelp, setShowHelp] = useState(false)
   const [copied, setCopied] = useState(false)
   const [shaking, setShaking] = useState(false)
+  const boxOpeningRef = useRef(false)
 
   const sounds = useSound(soundEnabled)
 
@@ -81,12 +82,14 @@ export default function App() {
   )
 
   const handleBoxOpen = useCallback(() => {
+    if (boxOpeningRef.current) return
+    boxOpeningRef.current = true
     sounds.playBoxOpen()
     setBoxOpened(true)
     setTimeout(() => {
       sounds.playRevealSparkle()
       setCompleted(true)
-    }, 400)
+    }, 700)
   }, [sounds])
 
   const handleSkip = useCallback(() => {
@@ -126,6 +129,7 @@ export default function App() {
     setCompleted(false)
     setSkipped(false)
     setCopied(false)
+    boxOpeningRef.current = false
   }, [])
 
   const flapsDone = FLAP_IDS.filter((id) => openedFlaps[id]).length
