@@ -22,7 +22,7 @@ export default function HelpModal({ open, onClose }) {
             <ol className="space-y-3 text-sm text-white/85">
               <li><strong className="text-accent-green">1.</strong> Pull the bow on top of the gift to untie it.</li>
               <li><strong className="text-accent-green">2.</strong> Drag each piece of tape off the package.</li>
-              <li><strong className="text-accent-green">3.</strong> Pull or tap each colourful wrapping flap (arrows show direction).</li>
+              <li><strong className="text-accent-green">3.</strong> Peel all 3 wrapping flaps — top, front, and side (counter shows progress).</li>
               <li><strong className="text-accent-green">4.</strong> Tap or drag the box lid upward to open!</li>
             </ol>
             <p className="mt-4 text-xs text-white/50">

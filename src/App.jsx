@@ -8,6 +8,7 @@ import BackgroundScene from './components/BackgroundScene'
 import InstructionCard from './components/InstructionCard'
 import HelpModal from './components/HelpModal'
 import GiftBox from './components/GiftBox'
+import { FLAP_IDS } from './components/presentConstants'
 
 const INSTRUCTIONS = {
   1: 'PULL THE BOW TO UNTIE IT',
@@ -16,7 +17,7 @@ const INSTRUCTIONS = {
   4: 'OPEN THE SUPPLY DROP',
 }
 
-const INITIAL_FLAPS = { top: false, left: false, right: false, front: false }
+const INITIAL_FLAPS = Object.fromEntries(FLAP_IDS.map((id) => [id, false]))
 const INITIAL_TAPE = { 0: false, 1: false, 2: false }
 
 export default function App() {
@@ -69,7 +70,7 @@ export default function App() {
       sounds.playPaperCrinkle()
       setOpenedFlaps((prev) => {
         const next = { ...prev, [flapId]: true }
-        const allDone = Object.values(next).every(Boolean)
+        const allDone = FLAP_IDS.every((id) => next[id])
         if (allDone) {
           setTimeout(() => setCurrentStep(4), 500)
         }
@@ -93,7 +94,7 @@ export default function App() {
     setCurrentStep(4)
     setTapeRemoved({ 0: true, 1: true, 2: true })
     setRibbonRemoved(true)
-    setOpenedFlaps({ top: true, left: true, right: true, front: true })
+    setOpenedFlaps(Object.fromEntries(FLAP_IDS.map((id) => [id, true])))
     setBoxOpened(true)
     setCompleted(true)
     sounds.playRevealSparkle()
@@ -127,11 +128,17 @@ export default function App() {
     setCopied(false)
   }, [])
 
+  const flapsDone = FLAP_IDS.filter((id) => openedFlaps[id]).length
+
   const instruction = completed
     ? skipped
       ? 'YOUR SUPPLY DROP IS READY!'
       : 'SUPPLY DROP UNLOCKED!'
-    : INSTRUCTIONS[currentStep]
+    : currentStep === 3
+      ? flapsDone === FLAP_IDS.length
+        ? 'WRAPPING OFF — OPEN THE BOX!'
+        : `PEEL WRAPPING PAPER (${flapsDone}/${FLAP_IDS.length})`
+      : INSTRUCTIONS[currentStep]
 
   return (
     <div className="relative h-full flex flex-col overflow-hidden">

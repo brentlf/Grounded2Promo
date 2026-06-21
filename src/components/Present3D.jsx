@@ -6,7 +6,7 @@ import Bow3D from './Bow3D'
 import TapeStrip3D from './TapeStrip3D'
 import WrappingFlap3D from './WrappingFlap3D'
 import OpenBox3D from './OpenBox3D'
-import { SIZE, HALF, TAPE_PIECES } from './presentConstants'
+import { SIZE, HALF, TAPE_PIECES, FLAP_IDS } from './presentConstants'
 
 function CubeFace({ transform, shade = 1, className = '', children, style = {} }) {
   return (
@@ -53,7 +53,7 @@ export default function Present3D({
     return () => window.removeEventListener('mousemove', handleMove)
   }, [])
 
-  const allFlapsOpen = Object.values(openedFlaps).every(Boolean)
+  const allFlapsOpen = FLAP_IDS.every((id) => openedFlaps[id])
   const allTapeRemoved = TAPE_PIECES.every((t) => tapeRemoved[t.id])
 
   const showWrappedCube = currentStep <= 2 && !completed
@@ -68,12 +68,21 @@ export default function Present3D({
 
   const showFlaps = currentStep === 3 && !allFlapsOpen && !completed
 
+  const step3Tilt = () => {
+    let x = -24
+    let y = -26
+    if (!openedFlaps.top) x = -34
+    if (!openedFlaps.front) y = -32
+    if (!openedFlaps.right) y = -20
+    return { x, y }
+  }
+
   const viewTilt = showReveal
     ? { x: -28, y: -8 }
     : showOpenBox
       ? { x: -24, y: -16 }
       : currentStep === 3
-        ? { x: -22, y: -24 }
+        ? step3Tilt()
         : tilt
 
   return (
@@ -214,7 +223,7 @@ export default function Present3D({
         {/* Layer 4: Colourful wrap flaps — rendered last for reliable interaction */}
         {showFlaps && (
           <div style={{ transformStyle: 'preserve-3d', pointerEvents: 'auto' }}>
-            {(['top', 'left', 'right', 'front']).map(
+            {FLAP_IDS.map(
               (id) =>
                 !openedFlaps[id] && (
                   <WrappingFlap3D

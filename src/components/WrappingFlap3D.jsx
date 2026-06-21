@@ -12,13 +12,6 @@ const FLAPS = {
     hint: '↑',
     hintStyle: { bottom: 8, left: '50%', transform: 'translateX(-50%)' },
   },
-  left: {
-    face: 'left',
-    origin: 'right center',
-    peel: { rotateY: 130 },
-    hint: '←',
-    hintStyle: { left: 8, top: '50%', transform: 'translateY(-50%)' },
-  },
   right: {
     face: 'right',
     origin: 'left center',
@@ -43,7 +36,7 @@ export default function WrappingFlap3D({ id, onOpen, onDragStart }) {
   const peel = () => {
     if (peeled) return
     setPeeled(true)
-    setTimeout(onOpen, 420)
+    onOpen()
   }
 
   const handleDragStart = () => {
@@ -94,7 +87,7 @@ export default function WrappingFlap3D({ id, onOpen, onDragStart }) {
           style={
             id === 'top' || id === 'front'
               ? { left: 0, right: 0, height: 4, [id === 'top' ? 'bottom' : 'top']: 0 }
-              : { top: 0, bottom: 0, width: 4, [id === 'left' ? 'right' : 'left']: 0 }
+              : { top: 0, bottom: 0, width: 4, right: 0 }
           }
         />
 
