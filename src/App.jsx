@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import { VOUCHER_CODE } from './config'
 import { useSound } from './hooks/useSound'
