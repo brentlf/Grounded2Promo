@@ -40,7 +40,32 @@ body {
   font-family: var(--font-display);
 }
 
-/* Kraft paper texture */
+/* Colourful gift wrap — forest adventure pattern */
+.gift-wrap-texture {
+  background-color: #2d6b4a;
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E"),
+    radial-gradient(circle at 15% 20%, rgba(245, 200, 66, 0.22) 0%, transparent 12%),
+    radial-gradient(circle at 85% 75%, rgba(232, 120, 48, 0.18) 0%, transparent 14%),
+    radial-gradient(circle at 60% 30%, rgba(124, 179, 66, 0.2) 0%, transparent 10%),
+    repeating-linear-gradient(
+      45deg,
+      rgba(45, 107, 74, 0.0) 0px,
+      rgba(45, 107, 74, 0.0) 16px,
+      rgba(30, 80, 55, 0.35) 16px,
+      rgba(30, 80, 55, 0.35) 32px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(60, 130, 85, 0.0) 0px,
+      rgba(60, 130, 85, 0.0) 20px,
+      rgba(40, 95, 65, 0.25) 20px,
+      rgba(40, 95, 65, 0.25) 40px
+    ),
+    linear-gradient(145deg, #3a8058 0%, #2d6b4a 35%, #245a3e 70%, #347550 100%);
+}
+
+/* Kraft paper texture (legacy fallback) */
 .kraft-texture {
   background-color: var(--color-kraft);
   background-image:

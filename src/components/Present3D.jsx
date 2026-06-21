@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import KraftDoodles from './KraftDoodles'
+import WrapDoodles from './WrapDoodles'
 import Ribbon3D from './Ribbon3D'
 import Bow3D from './Bow3D'
 import TapeStrip3D from './TapeStrip3D'
@@ -72,7 +72,9 @@ export default function Present3D({
     ? { x: -28, y: -8 }
     : showOpenBox
       ? { x: -24, y: -16 }
-      : tilt
+      : currentStep === 3
+        ? { x: -22, y: -24 }
+        : tilt
 
   return (
     <div
@@ -115,25 +117,25 @@ export default function Present3D({
         {showWrappedCube && (
           <div style={{ transformStyle: 'preserve-3d' }}>
             <CubeFace transform={`rotateY(0deg) translateZ(${HALF}px)`} shade={1.03}>
-              <div className="w-full h-full kraft-texture relative">
-                <KraftDoodles />
-                <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-black/18 pointer-events-none" />
+              <div className="w-full h-full gift-wrap-texture relative">
+                <WrapDoodles variant="front" />
+                <div className="absolute inset-0 bg-gradient-to-br from-white/12 via-transparent to-black/15 pointer-events-none" />
               </div>
             </CubeFace>
             <CubeFace transform={`rotateY(180deg) translateZ(${HALF}px)`} shade={0.72}>
-              <div className="w-full h-full kraft-texture" />
+              <div className="w-full h-full gift-wrap-texture"><WrapDoodles /></div>
             </CubeFace>
             <CubeFace transform={`rotateY(90deg) translateZ(${HALF}px)`} shade={0.86}>
-              <div className="w-full h-full kraft-texture" />
+              <div className="w-full h-full gift-wrap-texture"><WrapDoodles /></div>
             </CubeFace>
             <CubeFace transform={`rotateY(-90deg) translateZ(${HALF}px)`} shade={0.9}>
-              <div className="w-full h-full kraft-texture" />
+              <div className="w-full h-full gift-wrap-texture"><WrapDoodles /></div>
             </CubeFace>
             <CubeFace transform={`rotateX(90deg) translateZ(${HALF}px)`} shade={1.1}>
-              <div className="w-full h-full kraft-texture" />
+              <div className="w-full h-full gift-wrap-texture"><WrapDoodles variant="top" /></div>
             </CubeFace>
             <CubeFace transform={`rotateX(-90deg) translateZ(${HALF}px)`} shade={0.64}>
-              <div className="w-full h-full kraft-texture" />
+              <div className="w-full h-full gift-wrap-texture" />
             </CubeFace>
           </div>
         )}
@@ -209,10 +211,10 @@ export default function Present3D({
           )}
         </AnimatePresence>
 
-        {/* Layer 4: Kraft flaps */}
+        {/* Layer 4: Colourful wrap flaps — rendered last for reliable interaction */}
         {showFlaps && (
-          <div style={{ transformStyle: 'preserve-3d' }}>
-            {['top', 'left', 'right', 'bottom'].map(
+          <div style={{ transformStyle: 'preserve-3d', pointerEvents: 'auto' }}>
+            {(['top', 'left', 'right', 'front']).map(
               (id) =>
                 !openedFlaps[id] && (
                   <WrappingFlap3D

@@ -6,7 +6,7 @@ export const LAYER = {
   RIBBON: 1,
   RIBBON_CROSS: 2,
   TAPE: 5,
-  FLAP: 3,
+  FLAP: 14,
   BOW: 12,
   LID_HINT: 8,
 }
@@ -18,4 +18,4 @@ export const TAPE_PIECES = [
   { id: 2, x: 18, y: 52, rot: -38, w: 80, h: 18 },      // diagonal corner
 ]
 
-export const FLAP_IDS = ['top', 'left', 'right', 'bottom']
+export const FLAP_IDS = ['top', 'left', 'right', 'front']

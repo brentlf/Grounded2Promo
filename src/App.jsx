@@ -12,11 +12,11 @@ import GiftBox from './components/GiftBox'
 const INSTRUCTIONS = {
   1: 'PULL THE BOW TO UNTIE IT',
   2: 'DRAG THE TAPE TO PEEL IT OFF',
-  3: 'PULL THE WRAPPING PAPER OPEN',
+  3: 'PULL EACH WRAPPING FLAP OPEN',
   4: 'OPEN THE SUPPLY DROP',
 }
 
-const INITIAL_FLAPS = { top: false, left: false, right: false, bottom: false }
+const INITIAL_FLAPS = { top: false, left: false, right: false, front: false }
 const INITIAL_TAPE = { 0: false, 1: false, 2: false }
 
 export default function App() {
@@ -93,7 +93,7 @@ export default function App() {
     setCurrentStep(4)
     setTapeRemoved({ 0: true, 1: true, 2: true })
     setRibbonRemoved(true)
-    setOpenedFlaps({ top: true, left: true, right: true, bottom: true })
+    setOpenedFlaps({ top: true, left: true, right: true, front: true })
     setBoxOpened(true)
     setCompleted(true)
     sounds.playRevealSparkle()
