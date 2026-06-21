@@ -2,6 +2,8 @@ import { motion } from 'framer-motion'
 import Present3D from './Present3D'
 import VoucherCard from './VoucherCard'
 import Confetti from './Confetti'
+import { SCENE_WIDTH, SCENE_HEIGHT } from './presentConstants'
+import { useContainerScale } from '../hooks/useContainerScale'
 
 export default function GiftBox({
   currentStep,
@@ -21,27 +23,46 @@ export default function GiftBox({
   onInteractionStart,
 }) {
   const showReveal = boxOpened || completed
+  const { ref: sceneRef, scale } = useContainerScale(SCENE_WIDTH, SCENE_HEIGHT)
 
   return (
-    <div className="relative flex flex-col items-center justify-center flex-1 min-h-0 py-2">
+    <div className="relative flex flex-col flex-1 min-h-0 w-full">
       <div
-        className={`relative flex items-center justify-center w-full flex-1 min-h-0 ${!showReveal ? 'animate-bob' : ''} ${shaking ? 'animate-shake' : ''}`}
-        style={{ minHeight: showReveal ? undefined : 300 }}
+        ref={sceneRef}
+        className="relative flex items-center justify-center w-full flex-1 min-h-0"
       >
-        <Present3D
-          currentStep={currentStep}
-          tapeRemoved={tapeRemoved}
-          ribbonRemoved={ribbonRemoved}
-          openedFlaps={openedFlaps}
-          boxOpened={boxOpened}
-          completed={completed}
-          showReveal={showReveal}
-          onTapeRemove={onTapeRemove}
-          onRibbonRemove={onRibbonRemove}
-          onFlapOpen={onFlapOpen}
-          onBoxOpen={onBoxOpen}
-          onInteractionStart={onInteractionStart}
-        />
+        <div
+          className={`relative flex-shrink-0 ${!showReveal ? 'animate-bob' : ''} ${shaking ? 'animate-shake' : ''}`}
+          style={{
+            width: SCENE_WIDTH * scale,
+            height: SCENE_HEIGHT * scale,
+          }}
+        >
+          <div
+            className="absolute top-0 left-0"
+            style={{
+              width: SCENE_WIDTH,
+              height: SCENE_HEIGHT,
+              transform: `scale(${scale})`,
+              transformOrigin: 'top left',
+            }}
+          >
+            <Present3D
+              currentStep={currentStep}
+              tapeRemoved={tapeRemoved}
+              ribbonRemoved={ribbonRemoved}
+              openedFlaps={openedFlaps}
+              boxOpened={boxOpened}
+              completed={completed}
+              showReveal={showReveal}
+              onTapeRemove={onTapeRemove}
+              onRibbonRemove={onRibbonRemove}
+              onFlapOpen={onFlapOpen}
+              onBoxOpen={onBoxOpen}
+              onInteractionStart={onInteractionStart}
+            />
+          </div>
+        </div>
 
         <Confetti active={showReveal} />
 

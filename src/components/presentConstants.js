@@ -1,5 +1,7 @@
-export const SIZE = 200
+const BASE_SIZE = 200
+export const SIZE = 265
 export const HALF = SIZE / 2
+const R = SIZE / BASE_SIZE
 
 /** Distance outward from each face surface */
 export const LAYER = {
@@ -13,9 +15,12 @@ export const LAYER = {
 
 /** Tape on front face — local coords, crosses the ribbon */
 export const TAPE_PIECES = [
-  { id: 0, x: 38, y: 88, rot: 0, w: 124, h: 20 },       // horizontal over ribbon
-  { id: 1, x: 72, y: 38, rot: 90, w: 90, h: 18 },        // vertical seal
-  { id: 2, x: 18, y: 52, rot: -38, w: 80, h: 18 },      // diagonal corner
+  { id: 0, x: Math.round(38 * R), y: Math.round(88 * R), rot: 0, w: Math.round(124 * R), h: Math.round(20 * R) },
+  { id: 1, x: Math.round(72 * R), y: Math.round(38 * R), rot: 90, w: Math.round(90 * R), h: Math.round(18 * R) },
+  { id: 2, x: Math.round(18 * R), y: Math.round(52 * R), rot: -38, w: Math.round(80 * R), h: Math.round(18 * R) },
 ]
 
 export const FLAP_IDS = ['top', 'right', 'front']
+
+export const SCENE_WIDTH = SIZE + 80
+export const SCENE_HEIGHT = SIZE + 100

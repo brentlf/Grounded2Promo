@@ -2,6 +2,10 @@ import { motion } from 'framer-motion'
 import FaceAnchor from './FaceAnchor'
 import { LAYER, SIZE } from './presentConstants'
 
+const BOW_SCALE = SIZE / 200
+const BOW_W = 104
+const BOW_H = 88
+
 /** One puffy ribbon loop built from stacked 3D layers */
 function RibbonLoop({ flip = false }) {
   const x = flip ? 52 : 8
@@ -98,10 +102,10 @@ export default function Bow3D({ interactive = true, onRemove, onDragStart }) {
       <motion.div
         className={`absolute ${interactive ? 'cursor-grab active:cursor-grabbing touch-none' : 'pointer-events-none'}`}
         style={{
-          left: SIZE / 2 - 52,
-          top: SIZE / 2 - 38,
-          width: 104,
-          height: 88,
+          left: SIZE / 2 - 52 * BOW_SCALE,
+          top: SIZE / 2 - 38 * BOW_SCALE,
+          width: BOW_W * BOW_SCALE,
+          height: BOW_H * BOW_SCALE,
           transformStyle: 'preserve-3d',
         }}
         drag={interactive}
@@ -123,7 +127,16 @@ export default function Bow3D({ interactive = true, onRemove, onDragStart }) {
         {/* Invisible generous hit pad */}
         <div className="absolute inset-0" style={{ transform: 'translateZ(0px)' }} />
 
-        <div className="relative w-full h-full" style={{ transformStyle: 'preserve-3d' }}>
+        <div
+          className="relative"
+          style={{
+            width: BOW_W,
+            height: BOW_H,
+            transform: `scale(${BOW_SCALE})`,
+            transformOrigin: 'top left',
+            transformStyle: 'preserve-3d',
+          }}
+        >
           <RibbonLoop flip={false} />
           <RibbonLoop flip={true} />
           <BowKnot />

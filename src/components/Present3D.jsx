@@ -119,8 +119,6 @@ export default function Present3D({
         animate={{
           rotateX: viewTilt.x,
           rotateY: viewTilt.y,
-          scale: showReveal ? 0.5 : 1,
-          y: showReveal ? 90 : 0,
         }}
         transition={{ type: 'spring', stiffness: 80, damping: 18 }}
       >
