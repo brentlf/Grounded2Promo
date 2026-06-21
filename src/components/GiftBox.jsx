@@ -25,8 +25,8 @@ export default function GiftBox({
   return (
     <div className="relative flex flex-col items-center justify-center flex-1 min-h-0 py-2">
       <div
-        className={`relative flex items-center justify-center ${!showReveal ? 'animate-bob' : ''} ${shaking ? 'animate-shake' : ''}`}
-        style={{ minHeight: showReveal ? 420 : 300 }}
+        className={`relative flex items-center justify-center w-full flex-1 min-h-0 ${!showReveal ? 'animate-bob' : ''} ${shaking ? 'animate-shake' : ''}`}
+        style={{ minHeight: showReveal ? undefined : 300 }}
       >
         <Present3D
           currentStep={currentStep}
@@ -47,12 +47,12 @@ export default function GiftBox({
 
         {showReveal && (
           <motion.div
-            className="absolute inset-0 flex items-end sm:items-center justify-center z-30 pointer-events-none pb-4 sm:pb-0"
+            className="absolute inset-0 flex flex-col items-center justify-center z-30 pointer-events-none px-2 pt-1 pb-2"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.3, delay: 0.5 }}
+            transition={{ duration: 0.3, delay: 0.45 }}
           >
-            <div className="pointer-events-auto">
+            <div className="pointer-events-auto w-full h-full flex flex-col items-center justify-center max-h-full">
               <VoucherCard copied={copied} onCopy={onCopy} onPlayAgain={onPlayAgain} />
             </div>
           </motion.div>
